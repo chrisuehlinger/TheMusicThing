@@ -1,0 +1,17 @@
+{
+	"patches":
+	[
+    	{
+    		"name": "Orchestra Tuning",
+		    "samples":[
+		        { "note":"a4", "sample":"tuning1.mp3" }
+		    ]
+		},
+    	{
+    		"name": "Harp",
+		    "samples":[
+		        { "note":"d4", "sample":"d-on-harp-shorter.mp3" }
+		    ]
+		}
+    ]
+}

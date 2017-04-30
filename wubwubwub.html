@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<title>wubwubwub - Web Audio DJ</title>
+<link rel="stylesheet" href="style/main.css" type="text/css">
+<alink href='https://fonts.googleapis.com/css?family=Chango' rel='stylesheet' type='text/css'>
+</head>
+<body>
+
+<script src="//js.leapmotion.com/leap-0.6.4.js"></script>
+<!--<script src="https://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>-->
+<script src='https://cwilso.github.com/WebMIDIAPIShim/WebMIDIAPI.js'></script>
+<script src="js/cue.js"></script>
+<script src="js/dj.js"></script>
+<script src="js/midi.js"></script>
+<script src="js/tracks.js"></script>
+<script src="js/visualizer.js"></script>
+<script src="js/audiodisplay.js"></script>
+<script src="js/beatdetektor.js"></script>
+<script src="js/leap-stuff.js"></script>
+<div class="aligner">
+	<canvas id="wavedisplay" width="860" height="80"></canvas>
+	<div id="trackContainer">
+	</div>
+	<input id="xfader" class="xfade" type="range" min="0.0" max="1.0" step="0.01" value="0.5" oninput="crossfade(event.target.value)">
+	<div class="midi">MIDI Input: <select id=midiIn onchange='changeMidiIn();'>
+				<option value="">Not connected</option>
+			</select>
+		 MIDI Output:
+			<select id=midiOut onchange='changeMidiOut();'>
+				<option value="">Not connected</option>
+			</select>
+		<i class="license">music tracks from <a href="http://www.freesfx.co.uk">http://www.freesfx.co.uk</a>.</i>
+	</div>
+</div>
+
+<div style="visibility:hidden; width: 1px; height: 1px" id="MIDIPlugin"></div>
+<!--
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-35593052-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+-->
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>The Beat Conductor</title>
+</head>
+
+<body style="margin: 0;">
+  <div id="mydiv" style="width: 100%;">
+    <button id="playButton">Play</button>
+    <button id="pauseButton">Pause</button>
+    <label>BPM:<input type="text" id="bpmInput" /></label>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
+  <script src="src/js/core.js"></script>
+  <script src="src/js/pipe.js"></script>
+  <script src="src/js/rate-transposer.js"></script>
+  <script src="src/js/buffer.js"></script>
+  <script src="src/js/filter.js"></script>
+  <script src="src/js/stretch.js"></script>
+  <script src="src/js/soundtouch.js"></script>
+  <script src="test.js"></script>
+  <script src="src/js/leap-stuff.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js"></script>
+  <script src="src/js/viz.js"></script>
+  <script>
+    var count = 0;
+
+    function increment() {
+      console.log('increment')
+      if (count++ > 100) {
+        pause();
+        throw Error('whoa');
+      }
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,58 +1,55 @@
 var t = new RateTransposer(true);
 var s = new Stretch(true);
-//s.tempo = .5;
-t.rate = 2;
-var context = new webkitAudioContext();
+s.tempo = 1;
+//t.rate = 1;
 
+var context = new AudioContext();
 var buffer;
 
-loadSample = function(url) {
+function loadSample(url) {
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.responseType = 'arraybuffer';
-
     request.onload = function() {
-        console.log('url loaded');
-        createBuffer(request.response);
+      context.decodeAudioData(request.response, function(data) {
+        buffer = data;
+        play();
+      })
     }
-
-    console.log('reading url');
     request.send();
 }
 
-function createBuffer(arrayBuffer) {
-    offset = 0;
-    startTime = 0;
-    var start = new Date();
-    // NOTE the second parameter is required, or a TypeError is thrown
-    buffer = context.createBuffer(arrayBuffer, false);
-    console.log('loaded audio in ' + (new Date() - start));
-}
-
-//loadSample('badromance.mp3')
-loadSample('track.mp3')
+// loadSample('track.mp3')
 
 var BUFFER_SIZE = 1024;
-
-var node = context.createJavaScriptNode(BUFFER_SIZE, 2, 2);
-
 var samples = new Float32Array(BUFFER_SIZE * 2);
+var node;
 
-node.onaudioprocess = function (e) {
-    var l = e.outputBuffer.getChannelData(0);
-    var r = e.outputBuffer.getChannelData(1);
-    var framesExtracted = f.extract(samples, BUFFER_SIZE);
-    if (framesExtracted == 0) {
-        pause();
-    }
-    for (var i = 0; i < framesExtracted; i++) {
-        l[i] = samples[i * 2];
-        r[i] = samples[i * 2 + 1];
-    }
-};
+function createNode(){
+  node = context.createScriptProcessor(BUFFER_SIZE, 2, 2);
+
+  node.onaudioprocess = function (e) {
+      var l = e.outputBuffer.getChannelData(0);
+      var r = e.outputBuffer.getChannelData(1);
+      var framesExtracted = f.extract(samples, BUFFER_SIZE);
+      if (framesExtracted == 0) {
+          pause();
+      }
+      for (var i = 0; i < framesExtracted; i++) {
+          l[i] = samples[i * 2];
+          r[i] = samples[i * 2 + 1];
+      }
+  };
+}
+    createNode();
 
 function play() {
+
+
+f = new SimpleFilter(source, s);
     node.connect(context.destination);
+
+node.connect( analyserNode );
 }
 
 function pause() {

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://webaudiodemos.appspot.com/Samplr/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>.polymer-veiled { opacity: 0; }
+.polymer-unveil{ -webkit-transition: opacity 0.3s; transition: opacity 0.3s; }
+</style><style>element {display: none !important;} /* injected by platform.js */</style><style>template {display: none !important;} /* injected by platform.js */</style>
+
+    <meta name="viewport" content="width=916,user-scalable=no,initial-scale=1">
+	<title>Sample Playback Synthesizer</title>
+	<link href="./Samplr_files/css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="./Samplr_files/main.css">
+    <style>
+        canvas {
+            border:  3px solid gray;
+            border-radius: 15px;
+            background: teal;
+            box-shadow: 7px 10px 5px black;
+            display: none;
+        }
+        canvas + canvas {
+          display: block;
+        }
+    </style>
+    <script src="./Samplr_files/polymer-v0.0.20131107.min.js"></script><style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; touch-action-delay: none; }[touch-action="auto"]{ -ms-touch-action: auto; touch-action: auto; touch-action-delay: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; touch-action-delay: none; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; touch-action-delay: none; }[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; touch-action-delay: none; }</style>
+    <link rel="import" href="controls.html">
+
+    <!-- Set up Web MIDI polyfill -->
+<!--
+    <script src='http://cwilso.github.com/WebMIDIAPIShim/WebMIDIAPI.js'></script>
+-->
+    <!-- Monkey-patch all the audio calls so it works on compliant AudioContext implementations -->
+<!--
+    <script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
+-->
+    <script type="text/javascript" src="./Samplr_files/midi.js"></script>
+    <script type="text/javascript" src="./Samplr_files/waveshaper.js"></script>
+    <script type="text/javascript" src="./Samplr_files/synth.js"></script>
+    <script type="text/javascript" src="./Samplr_files/ui.js"></script>
+    <script type="text/javascript" src="./Samplr_files/oscilloscope.js"></script>
+    <script type="text/javascript" src="./Samplr_files/multisample.js"></script>
+    <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
+    <script type="text/javascript" src="margie-leap-stuff.js"></script>
+</head>
+
+<body class="">
+    <div id="synthbox" class="loaded">
+        <select id="patch"><option>Akai Professional Piano</option><option>TR909</option><option>Keyboards 1: Bell Synth</option><option>Keyboards 1: Crystal Bell Organ</option><option>Keyboards 1: Dirty Clavier</option><option>Keyboards 1: Electric Organ 1</option><option>Keyboards 1: Electric Organ 2</option><option>Keyboards 1: Electric Organ 3</option><option>Keyboards 1: Electric Organ 4</option><option>Keyboards 1: Electric Korg</option><option>Keyboards 1: Melodium</option><option>Keyboards 1: Organ 1</option><option>Keyboards 1: Organ 2</option><option>Keyboards 1: Organ 3</option><option>Keyboards 1: Organ 4</option><option>Keyboards 1: Organ 5</option><option>Keyboards 1: Toy Organ</option><option>Tremolo Strings: Orch2</option><option>Tremolo Strings: Orch5</option><option>Tremolo Strings: OrchFz1</option><option>Tremolo Strings: Sfzan1</option><option>Tremolo Strings: Shimmer</option><option>Tremolo Strings: Tibet</option><option>Tremolo Strings: Tympani</option><option>Tremolo Strings: Violin Tremolo 2</option><option>Tremolo Strings: Violin Tremolo 4</option><option>Tremolo Strings: Violin Tremolo*</option><option>Tremolo Strings: Violin Tremolo</option><option>Glass Strike</option><option>Humans 1: Ah2</option><option>Humans 1: Arr1</option><option>Humans 1: Bucchi</option><option>Humans 1: Clap</option><option>Humans 1: Do</option><option>Humans 1: La</option><option>Humans 1: Laugh</option><option>Humans 1: Mmm</option><option>Humans 1: Moan</option><option>Humans 1: Mouth02</option><option>Humans 1: Shout</option><option>Humans 1: Tom Bass</option><option>Humans 1: Vox1</option><option>Humans 1: Vox</option><option>Humans 1: Whistle</option><option>Humans 2: Ahh1</option><option>Humans 2: Ahh</option><option>Humans 2: Alto1</option><option>Humans 2: Bass1</option><option>Humans 2: Bass2</option><option>Humans 2: Laf</option><option>Humans 2: Ooh</option><option>Humans 2: Oohh</option><option>Humans 2: Scream5</option><option>Humans 2: Shhha</option><option>Humans 2: Soprano1</option><option>Humans 2: Tenor2</option><option>Humans 2: Tenor3</option><option>Humans 2: Voice3</option><option>Humans 2: Voxm</option><option>Humans 2: Xom</option></select>
+        <select id="midiIn"></select>
+        <select id="octave">
+            <option>+3</option>
+            <option>+2</option>
+            <option>+1</option>
+            <option selected=""> 0</option>
+            <option>-1</option>
+            <option>-2</option>
+            <option>-3</option>
+        </select>
+    <canvas width="512" height="256"></canvas></div>
+    <div id="keybox" touch-action="none">
+        <div id="blackkeys">
+            <span id="k61" class="black key"></span><span id="k63" class="black key"></span><span class="spacer"></span><span id="k66" class="black key"></span><span id="k68" class="black key"></span><span id="k70" class="black key"></span><span class="spacer"></span><span id="k73" class="black key"></span><span id="k75" class="black key"></span><span class="spacer"></span><span id="k78" class="black key"></span><span id="k80" class="black key pressed"></span><span id="k82" class="black key"></span>
+        </div>
+        <span id="k60" class="white key"></span><span id="k62" class="white key"></span><span id="k64" class="white key"></span><span id="k65" class="white key"></span><span id="k67" class="white key"></span><span id="k69" class="white key"></span><span id="k71" class="white key"></span><span id="k72" class="white key"></span><span id="k74" class="white key"></span><span id="k76" class="white key"></span><span id="k77" class="white key"></span><span id="k79" class="white key"></span><span id="k81" class="white key"></span><span id="k83" class="white key"></span>
+    </div>
+    <div id="githubnotice"><a href="http://github.com/cwilso/midi-synth">Fork my code on Github</a></div>
+    <div id="MIDIPlugin"></div>
+
+<!--
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-35593052-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+-->
+</body></html>
