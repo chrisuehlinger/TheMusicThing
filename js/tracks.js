@@ -106,7 +106,7 @@ function Track( url, left ) {
       console.log(rate);
       this.pbrSlider.value = rate;
       var evt = new CustomEvent('input');
-      leftTrack.pbrSlider.dispatchEvent(evt);
+      this.pbrSlider.dispatchEvent(evt);
       startPosition = newPosition;
     }
   }
