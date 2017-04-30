@@ -115,7 +115,7 @@ function Track( url, left ) {
     startPosition = undefined;
     this.pbrSlider.value = 1;
     var evt = new CustomEvent('input');
-    leftTrack.pbrSlider.dispatchEvent(evt);
+    this.pbrSlider.dispatchEvent(evt);
   }
 
 
