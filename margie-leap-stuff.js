@@ -3,8 +3,8 @@ var controller = new Leap.Controller({
   frameEventName: 'animationFrame'
 });
 controller.connect();
-console.log('HRYO')
 
+var tolerance = -30;
 var oldHandsDown = {};
 controller.on('frame', function(frame){
   if(Math.random() < 0.5){
@@ -18,10 +18,10 @@ controller.on('frame', function(frame){
       handsDown[hand.type] = [];
       hand.fingers.forEach(function (finger) {
           var fingerPosition = finger.tipPosition[1] - hand.palmPosition[1];
-          if (fingerPosition < -21) {
+          if (fingerPosition < tolerance) {
             console.log("Play that note")
           }
-        handsDown[hand.type].push(fingerPosition < -21)
+        handsDown[hand.type].push(fingerPosition < tolerance)
           console.log('finger.tipPosition', finger.type, finger.tipPosition);
       });
 
